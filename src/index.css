@@ -1,4 +1,22 @@
 @import "tailwindcss";
+@import "@fontsource-variable/noto-sans/wght.css";
+@import "@fontsource-variable/noto-sans/wght-italic.css";
+
+/* Bayer brand Unicode typeface (Noto Sans), self-hosted for offline PWA */
+@theme {
+  --font-sans: "Noto Sans Variable", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Smooth, antialiased text rendering across the whole app */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 @keyframes shimmer {
   0% {

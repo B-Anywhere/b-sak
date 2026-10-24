@@ -866,8 +866,8 @@ export default function App() {
             }}
           >
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00BCFF] via-[#00617F] to-[#89D329] p-[1.5px] shadow-sm">
-              <div className="w-full h-full bg-[#10384F] rounded-[10px] flex items-center justify-center font-black italic text-white text-base">
-                B
+              <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
+                <img src="./icon.svg" alt="" width={22} height={16} className="w-[22px] h-auto" draggable={false} />
               </div>
             </div>
             <div>
