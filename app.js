@@ -360,4 +360,7 @@ async function init() {
   renderDialog();
 }
 
+// Drop any service worker left by the old Vite PWA build (prod: sw.js, dev: dev-sw.js).
+navigator.serviceWorker?.getRegistrations().then((rs) => rs.forEach((r) => r.unregister()));
+
 init();

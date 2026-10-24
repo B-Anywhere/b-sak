@@ -27,7 +27,7 @@ jobs:
       - name: Stage site files
         run: |
           mkdir _site
-          cp -r index.html style.css app.js icons.js tools.json sw.js manifest.webmanifest \
+          cp -r index.html style.css app.js icons.js tools.json sw.js dev-sw.js manifest.webmanifest \
             icon.svg apple-touch-icon.png pwa-*.png assets _site/
 
       - uses: actions/upload-pages-artifact@v5

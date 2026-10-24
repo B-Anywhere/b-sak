@@ -10,7 +10,7 @@ Static, **no-build, zero-dependency** site: vanilla JS + plain CSS, deployed to 
 - Escape all data inserted into HTML (use the `esc()` helper in `app.js`).
 - New icons: add the Lucide SVG inner markup to `ICONS` in `icons.js`; `iconType` in `tools.json` must match a key.
 - Keep the keyboard UX working (`/`, arrows, Enter, Esc) and deep links (`#id`, `?category=`).
-- `sw.js` only unregisters the legacy service worker; don't turn it into a caching worker without discussion.
+- `sw.js` and `dev-sw.js` only unregister the legacy service worker; don't turn it into a caching worker without discussion.
 
 ## Files
 
