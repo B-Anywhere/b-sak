@@ -21,9 +21,12 @@ import {
   Globe,
   Radio,
   Play,
-  Maximize2
+  Maximize2,
+  Download,
+  WifiOff
 } from 'lucide-react';
 import toolsData from './data/tools.json';
+import { usePWAInstall } from './usePWAInstall';
 
 // --- Types ---
 export interface ToolItem {
@@ -42,6 +45,118 @@ export interface ToolItem {
 const ICON_MAP: Record<string, any> = {
   Video, Scissors, Film, Radio, Layers, Sparkles, Sliders, Globe, Play, Zap
 };
+
+// --- Reusable Skeleton Loader Component for Tool Previews ---
+function PreviewImageWithSkeleton({
+  src,
+  alt,
+  className = '',
+  imgClassName = '',
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  imgClassName?: string;
+  priority?: boolean;
+}) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(false);
+    setHasError(false);
+
+    // Fast check if already cached and pre-decoded
+    const img = new window.Image();
+    img.src = src;
+    if (img.complete && img.naturalWidth > 0) {
+      setIsLoaded(true);
+    } else {
+      img.onload = () => {
+        if ('decode' in img) {
+          img.decode().then(() => setIsLoaded(true)).catch(() => setIsLoaded(true));
+        } else {
+          setIsLoaded(true);
+        }
+      };
+      img.onerror = () => {
+        setIsLoaded(true);
+        setHasError(true);
+      };
+    }
+  }, [src]);
+
+  return (
+    <div className={`relative w-full h-full overflow-hidden bg-[#EDF2F7] ${className}`}>
+      {/* Animated Skeleton Loading State */}
+      {!isLoaded && !hasError && (
+        <div 
+          className="absolute inset-0 flex flex-col justify-between p-3.5 bg-gradient-to-br from-[#F1F5F9] via-[#E2E8F0] to-[#E2E8F0] z-0 overflow-hidden"
+          aria-hidden="true"
+        >
+          {/* Skeleton Top Window Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#CBD5E1]" />
+              <span className="w-2 h-2 rounded-full bg-[#CBD5E1]" />
+              <span className="w-2 h-2 rounded-full bg-[#CBD5E1]" />
+            </div>
+            <div className="h-2 w-14 bg-[#CBD5E1]/80 rounded-full" />
+          </div>
+
+          {/* Skeleton Center Simulated Interface Content */}
+          <div className="my-auto space-y-2.5 px-2">
+            <div className="h-10 sm:h-14 w-full rounded-xl bg-[#CBD5E1]/60 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-lg bg-[#94A3B8]/20 flex items-center justify-center">
+                <span className="w-3 h-3 rounded-full border-2 border-[#00617F]/40 border-t-transparent animate-spin" />
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-3/5 bg-[#CBD5E1] rounded-full" />
+              <div className="h-2 w-1/4 bg-[#CBD5E1]/70 rounded-full" />
+            </div>
+          </div>
+
+          {/* Skeleton Bottom Toolbar */}
+          <div className="flex items-center justify-between pt-1">
+            <div className="h-2 w-16 bg-[#CBD5E1] rounded-full" />
+            <div className="h-2 w-10 bg-[#CBD5E1] rounded-full" />
+          </div>
+
+          {/* Shimmer Light Streak Animation */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full animate-[shimmer_1.6s_infinite]" />
+        </div>
+      )}
+
+      {/* Actual Tool Preview Image */}
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        fetchPriority={priority ? 'high' : 'low'}
+        referrerPolicy="no-referrer"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => {
+          setIsLoaded(true);
+          setHasError(true);
+        }}
+        className={`w-full h-full object-cover transition-all duration-300 ${
+          isLoaded && !hasError ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.98]'
+        } ${imgClassName}`}
+      />
+
+      {/* Error Fallback */}
+      {hasError && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-[#F8FAFC] text-[#64748B] text-center">
+          <Monitor size={22} className="mb-1.5 text-[#94A3B8]" />
+          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#475569]">Preview Loading</span>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // --- Quick View Dialog in Bayer Light Theme ---
 function QuickViewDialog({ 
@@ -106,15 +221,18 @@ function QuickViewDialog({
         </button>
 
         <div className="flex flex-col md:flex-row h-full max-h-[85vh]">
-          {/* Preview Image Frame */}
-          <div className="w-full md:w-1/2 aspect-video md:aspect-auto bg-[#F8FAFC] border-b md:border-b-0 md:border-r border-[#E2E8F0] overflow-hidden relative">
-            <img 
+          {/* Preview Image Frame with Skeleton: adapts to 9:16 in mobile view */}
+          <div className={`w-full md:w-1/2 bg-[#F8FAFC] border-b md:border-b-0 md:border-r border-[#E2E8F0] overflow-hidden relative flex items-center justify-center transition-all ${
+            viewMode === 'mobile' 
+              ? 'aspect-[9/16] max-h-[500px] md:max-h-none' 
+              : 'aspect-video md:aspect-auto min-h-[220px]'
+          }`}>
+            <PreviewImageWithSkeleton 
               src={viewMode === 'mobile' ? tool.mobileImg : tool.desktopImg} 
               alt={`${tool.title} preview`} 
-              className="w-full h-full object-cover" 
             />
-            <div className="absolute bottom-3 left-3 px-2 py-0.5 rounded bg-white/95 border border-[#CBD5E1] text-[9px] font-mono font-bold text-[#10384F] shadow-xs">
-              {viewMode.toUpperCase()} VIEW
+            <div className="absolute bottom-3 left-3 px-2 py-0.5 rounded bg-white/95 border border-[#CBD5E1] text-[9px] font-mono font-bold text-[#10384F] shadow-xs z-10">
+              {viewMode.toUpperCase()} ({viewMode === 'mobile' ? '9:16' : '16:9'})
             </div>
           </div>
 
@@ -174,8 +292,74 @@ function QuickViewDialog({
   );
 }
 
-// --- ToolCard with Bayer Light Theme ---
-function ToolCard({ 
+// --- In-App PWA Install Component with Guided Modal for iOS Safari ---
+function PWAInstallHeaderButton() {
+  const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
+  const [showIOSModal, setShowIOSModal] = useState(false);
+
+  if (isInstalled) return null;
+
+  if (isInstallable) {
+    return (
+      <button
+        onClick={install}
+        className="flex items-center gap-1.5 px-3 py-2 bg-[#00BCFF]/15 hover:bg-[#00BCFF]/25 text-[#00617F] text-xs font-black rounded-full border border-[#00BCFF]/40 transition-all active:scale-95"
+        title="Install B-Anywhere for instant 0ms offline launch"
+      >
+        <Download size={13} />
+        <span className="hidden md:inline">INSTALL APP</span>
+      </button>
+    );
+  }
+
+  if (isIOS) {
+    return (
+      <>
+        <button
+          onClick={() => setShowIOSModal(true)}
+          className="flex items-center gap-1.5 px-3 py-2 bg-[#00BCFF]/15 hover:bg-[#00BCFF]/25 text-[#00617F] text-xs font-black rounded-full border border-[#00BCFF]/40 transition-all active:scale-95"
+          title="Install on iPhone / iPad"
+        >
+          <Download size={13} />
+          <span className="hidden md:inline">INSTALL</span>
+        </button>
+        {showIOSModal && (
+          <div 
+            className="fixed inset-0 z-[120] flex items-center justify-center bg-[#10384F]/60 backdrop-blur-sm p-4" 
+            onClick={() => setShowIOSModal(false)}
+          >
+            <div 
+              className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-[#CBD5E1] text-[#10384F]" 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-base font-black text-[#10384F]">Install B-Anywhere on iOS</h3>
+                <button onClick={() => setShowIOSModal(false)} className="text-[#64748B] hover:text-[#10384F]">
+                  <X size={18} />
+                </button>
+              </div>
+              <p className="text-xs text-[#475569] leading-relaxed">
+                1. Tap the <strong className="text-[#10384F]">Share</strong> button in Safari's toolbar.<br />
+                2. Scroll down and tap <strong className="text-[#10384F]">Add to Home Screen</strong>.
+              </p>
+              <button
+                onClick={() => setShowIOSModal(false)}
+                className="mt-5 w-full rounded-xl bg-[#10384F] py-2.5 text-xs font-black text-white hover:bg-[#00617F] transition-colors"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+
+  return null;
+}
+
+// --- Memoized ToolCard with Bayer Light Theme & Content-Visibility Performance ---
+const ToolCard = React.memo(function ToolCard({ 
   tool, 
   globalIndex,
   isFocused,
@@ -196,10 +380,12 @@ function ToolCard({
   
   return (
     <div 
+      id={`tool-${tool.id}`}
       ref={cardRef}
       tabIndex={0}
       role="article"
-      aria-label={`${tool.title}, ${tool.category}. Press Enter for Quick View.`}
+      aria-label={`${tool.title}, ${tool.category}. Click or press Enter for Quick View.`}
+      onClick={() => onQuickView(tool)}
       onFocus={() => onCardFocus(globalIndex)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -207,29 +393,34 @@ function ToolCard({
           onQuickView(tool);
         }
       }}
-      className={`group relative flex flex-col bg-white border rounded-2xl overflow-hidden h-full transition-all duration-300 outline-none ${
+      className={`tool-card-container group relative flex flex-col bg-white border rounded-2xl overflow-hidden h-full transition-all duration-300 outline-none cursor-pointer ${
         isFocused 
           ? 'border-[#00BCFF] ring-2 ring-[#00BCFF] ring-offset-2 ring-offset-[#F8FAFC] shadow-xl shadow-[#00BCFF]/15 -translate-y-1' 
           : 'border-[#E2E8F0] shadow-xs hover:border-[#00BCFF]/60 hover:shadow-xl hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-[#00BCFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8FAFC]'
       }`}
     >
-      {/* Preview Frame */}
-      <div className="relative aspect-video w-full overflow-hidden bg-[#F1F5F9] border-b border-[#E2E8F0]">
-        <img 
-          src={viewMode === 'mobile' ? tool.mobileImg : tool.desktopImg} 
-          alt={tool.title} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-          loading="lazy" 
+      {/* Preview Frame: switches to 9:16 in mobile view mode, 16:9 in desktop mode */}
+      <div className={`relative w-full overflow-hidden bg-[#F1F5F9] border-b border-[#E2E8F0] transition-all duration-300 ${
+        viewMode === 'mobile' ? 'aspect-[9/16]' : 'aspect-video'
+      }`}>
+        <PreviewImageWithSkeleton
+          src={viewMode === 'mobile' ? tool.mobileImg : tool.desktopImg}
+          alt={`${tool.title} preview`}
+          priority={globalIndex < 6}
+          imgClassName="transition-transform duration-700 group-hover:scale-105"
         />
 
         {/* Hover/Focus Action Overlay */}
-        <div className={`absolute inset-0 bg-[#10384F]/65 backdrop-blur-xs transition-opacity flex items-center justify-center gap-2 ${
+        <div className={`absolute inset-0 z-10 bg-[#10384F]/65 backdrop-blur-xs transition-opacity flex items-center justify-center gap-2 ${
           isFocused ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 focus-within:opacity-100'
         }`}>
           <button 
             type="button"
             tabIndex={-1}
-            onClick={() => onQuickView(tool)} 
+            onClick={(e) => {
+              e.stopPropagation();
+              onQuickView(tool);
+            }} 
             className="bg-white text-[#10384F] hover:bg-[#F8FAFC] px-3.5 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 shadow-lg active:scale-95 transition-all"
             title="Press Enter"
           >
@@ -250,8 +441,8 @@ function ToolCard({
         </div>
 
         {/* Corner View Tag */}
-        <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-white/90 backdrop-blur-md text-[8px] font-mono font-bold text-[#10384F] border border-[#CBD5E1] shadow-xs pointer-events-none">
-          {viewMode.toUpperCase()}
+        <div className="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded bg-white/90 backdrop-blur-md text-[8px] font-mono font-bold text-[#10384F] border border-[#CBD5E1] shadow-xs pointer-events-none">
+          {viewMode.toUpperCase()} {viewMode === 'mobile' ? '9:16' : '16:9'}
         </div>
       </div>
 
@@ -298,15 +489,108 @@ function ToolCard({
       </div>
     </div>
   );
+});
+
+// --- URL Parameter & Hash Tag Routing Helpers ---
+const ALL_CATEGORIES = ['ALL', ...Array.from(new Set((toolsData as ToolItem[]).map(t => t.category)))];
+
+function getCategoryFromUrl(): string {
+  if (typeof window === 'undefined') return 'ALL';
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('category');
+    if (!cat) return 'ALL';
+    const found = ALL_CATEGORIES.find(c => c.toLowerCase() === cat.trim().toLowerCase());
+    return found || 'ALL';
+  } catch {
+    return 'ALL';
+  }
+}
+
+function getToolFromHash(): ToolItem | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const hash = window.location.hash.replace(/^#/, '').trim().toLowerCase();
+    if (!hash) return null;
+    const tool = (toolsData as ToolItem[]).find(t => t.id.toLowerCase() === hash);
+    return tool || null;
+  } catch {
+    return null;
+  }
 }
 
 // --- Main Application Component in Bayer Light Theme ---
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop');
-  const [selectedTool, setSelectedTool] = useState<ToolItem | null>(null);
-  const [activeCategory, setActiveCategory] = useState('ALL');
+  
+  // Auto-detect mobile viewport on load (<768px -> mobile mode with 9:16 ratio)
+  const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return 'mobile';
+    }
+    return 'desktop';
+  });
+  const userManuallyToggledRef = useRef(false);
+
+  // Auto-sync when viewport changes between desktop and mobile screen sizes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const handleViewportChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (!userManuallyToggledRef.current) {
+        setViewMode(e.matches ? 'mobile' : 'desktop');
+      }
+    };
+
+    handleViewportChange(mediaQuery);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleViewportChange);
+      return () => mediaQuery.removeEventListener('change', handleViewportChange);
+    } else {
+      mediaQuery.addListener(handleViewportChange);
+      return () => mediaQuery.removeListener(handleViewportChange);
+    }
+  }, []);
+
+  // Hydrate initial category from URL param (?category=...) and selected tool from URL hash (#app-id)
+  const [selectedTool, setSelectedTool] = useState<ToolItem | null>(getToolFromHash);
+  const [activeCategory, setActiveCategory] = useState<string>(getCategoryFromUrl);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+
+  // Online/Offline status detection for PWA
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // In-Memory Pre-warming & Off-Thread Image Decoding for instantaneous paint
+  useEffect(() => {
+    const prewarm = () => {
+      ['./assets/images/placeholder_desktop.jpg', './assets/images/placeholder_mobile.jpg'].forEach((url) => {
+        const img = new Image();
+        img.src = url;
+        if ('decode' in img) {
+          img.decode().catch(() => {});
+        }
+      });
+    };
+
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(prewarm);
+    } else {
+      setTimeout(prewarm, 150);
+    }
+  }, []);
 
   // Scroll Progress Bar Tracker (GPU-accelerated, zero-layout reflow)
   const { scrollYProgress } = useScroll();
@@ -320,9 +604,17 @@ export default function App() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Category List
-  const categories = useMemo(() => {
-    const cats = Array.from(new Set(toolsData.map(t => t.category)));
-    return ['ALL', ...cats];
+  const categories = ALL_CATEGORIES;
+
+  // Total tools count per category for badge display
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      ALL: toolsData.length,
+    };
+    (toolsData as ToolItem[]).forEach((tool) => {
+      counts[tool.category] = (counts[tool.category] || 0) + 1;
+    });
+    return counts;
   }, []);
 
   // Filtered Tools Array
@@ -373,6 +665,79 @@ export default function App() {
       }
     }
   }, [filteredData.length]);
+
+  // Dynamic category URL updater (category in URL param, preserved across F5 refresh)
+  const handleSelectCategory = useCallback((cat: string) => {
+    setActiveCategory(cat);
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        if (cat === 'ALL') {
+          url.searchParams.set('category', 'ALL');
+        } else {
+          url.searchParams.set('category', cat);
+        }
+        window.history.pushState({ category: cat }, '', url.toString());
+      } catch (err) {
+        console.error('Failed to update URL category param:', err);
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => focusCard(0), 100);
+  }, [focusCard]);
+
+  // Open Quick View modal and update URL hash tag with app ID
+  const handleOpenQuickView = useCallback((tool: ToolItem) => {
+    setSelectedTool(tool);
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        url.hash = tool.id;
+        window.history.pushState({ toolId: tool.id }, '', url.toString());
+      } catch (err) {
+        console.error('Failed to update URL hash:', err);
+      }
+    }
+  }, []);
+
+  // Close Quick View modal and remove URL hash tag while preserving category param
+  const handleCloseQuickView = useCallback(() => {
+    setSelectedTool(null);
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        if (url.hash) {
+          url.hash = '';
+          const newPath = url.pathname + (url.search ? url.search : '');
+          window.history.pushState(null, '', newPath);
+        }
+      } catch (err) {
+        console.error('Failed to remove URL hash:', err);
+      }
+    }
+    if (focusedIndex !== null) {
+      cardRefs.current[focusedIndex]?.focus();
+    }
+  }, [focusedIndex]);
+
+  // Synchronize state when user navigates using browser Back/Forward (popstate/hashchange)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleLocationChange = () => {
+      const urlCat = getCategoryFromUrl();
+      setActiveCategory(urlCat);
+      const urlTool = getToolFromHash();
+      setSelectedTool(urlTool);
+    };
+
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
+  }, []);
 
   // Global Keyboard Navigation (Arrow Keys, Enter, Esc, Slash to Search)
   useEffect(() => {
@@ -486,7 +851,7 @@ export default function App() {
             className="flex items-center gap-3 cursor-pointer" 
             onClick={() => {
               setSearchQuery('');
-              setActiveCategory('ALL');
+              handleSelectCategory('ALL');
               focusCard(0);
             }}
           >
@@ -534,23 +899,42 @@ export default function App() {
               </div>
             </div>
 
-            {/* Desktop / Mobile Preview Toggle */}
+            {/* Desktop (16:9) / Mobile (9:16) Preview Ratio Toggle */}
             <div className="flex bg-[#F1F5F9] p-1 rounded-xl border border-[#E2E8F0]">
               <button 
-                onClick={() => setViewMode('desktop')} 
-                className={`p-1.5 rounded-lg transition-all ${viewMode === 'desktop' ? 'bg-[#10384F] text-white shadow-xs font-bold' : 'text-[#64748B] hover:text-[#10384F]'}`}
-                title="View desktop screenshots"
+                onClick={() => {
+                  userManuallyToggledRef.current = true;
+                  setViewMode('desktop');
+                }} 
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-lg transition-all text-xs ${
+                  viewMode === 'desktop' 
+                    ? 'bg-[#10384F] text-white shadow-xs font-bold' 
+                    : 'text-[#64748B] hover:text-[#10384F]'
+                }`}
+                title="Desktop 16:9 Ratio"
               >
-                <Monitor size={15} />
+                <Monitor size={14} />
+                <span className="hidden lg:inline text-[10px] font-mono">16:9</span>
               </button>
               <button 
-                onClick={() => setViewMode('mobile')} 
-                className={`p-1.5 rounded-lg transition-all ${viewMode === 'mobile' ? 'bg-[#10384F] text-white shadow-xs font-bold' : 'text-[#64748B] hover:text-[#10384F]'}`}
-                title="View mobile screenshots"
+                onClick={() => {
+                  userManuallyToggledRef.current = true;
+                  setViewMode('mobile');
+                }} 
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-lg transition-all text-xs ${
+                  viewMode === 'mobile' 
+                    ? 'bg-[#10384F] text-white shadow-xs font-bold' 
+                    : 'text-[#64748B] hover:text-[#10384F]'
+                }`}
+                title="Mobile 9:16 Ratio"
               >
-                <Smartphone size={15} />
+                <Smartphone size={14} />
+                <span className="hidden lg:inline text-[10px] font-mono">9:16</span>
               </button>
             </div>
+
+            {/* PWA In-App Install Prompt */}
+            <PWAInstallHeaderButton />
 
             {/* External Suite Link */}
             <a 
@@ -564,6 +948,14 @@ export default function App() {
             </a>
           </div>
         </div>
+
+        {/* Offline notification badge if disconnected */}
+        {!isOnline && (
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-1 rounded-full bg-[#10384F] text-[#00BCFF] text-[11px] font-mono border border-[#00BCFF]/40 shadow-lg animate-pulse">
+            <WifiOff size={12} />
+            <span>Offline Mode Active — Cached assets running instantly</span>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -627,7 +1019,7 @@ export default function App() {
                       globalIndex={currentIndex}
                       isFocused={focusedIndex === currentIndex}
                       viewMode={viewMode} 
-                      onQuickView={setSelectedTool}
+                      onQuickView={handleOpenQuickView}
                       onCardFocus={(idx) => setFocusedIndex(idx)}
                       cardRef={(el) => { cardRefs.current[currentIndex] = el; }}
                     />
@@ -643,7 +1035,7 @@ export default function App() {
             <Search size={36} className="mx-auto mb-3 text-[#94A3B8]" />
             <p className="font-bold tracking-widest uppercase text-xs text-[#475569] mb-2">No matching tools found</p>
             <button
-              onClick={() => { setSearchQuery(''); setActiveCategory('ALL'); }}
+              onClick={() => { setSearchQuery(''); handleSelectCategory('ALL'); }}
               className="px-4 py-2 bg-[#10384F] hover:bg-[#00617F] text-white rounded-full text-xs font-bold transition-colors shadow-sm"
             >
               Reset Search & Filters
@@ -657,23 +1049,33 @@ export default function App() {
         aria-label="Category Filter Navigation"
         className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 p-1.5 bg-white/90 backdrop-blur-xl border border-[#CBD5E1] rounded-2xl shadow-xl flex items-center gap-1.5 max-w-[95vw] overflow-x-auto no-scrollbar"
       >
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => {
-              setActiveCategory(cat);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              setTimeout(() => focusCard(0), 100);
-            }}
-            className={`px-3.5 py-1.5 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00BCFF] ${
-              activeCategory === cat 
-                ? 'bg-[#10384F] text-white shadow-sm font-black' 
-                : 'text-[#475569] hover:text-[#10384F] hover:bg-[#F1F5F9]'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+        {categories.map((cat) => {
+          const isActive = activeCategory === cat;
+          const count = categoryCounts[cat] ?? 0;
+          return (
+            <button
+              key={cat}
+              onClick={() => handleSelectCategory(cat)}
+              className={`group relative inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00BCFF] ${
+                isActive 
+                  ? 'bg-[#10384F] text-white shadow-sm font-black' 
+                  : 'text-[#475569] hover:text-[#10384F] hover:bg-[#F1F5F9]'
+              }`}
+            >
+              <span>{cat}</span>
+              <sup
+                className={`text-[8.5px] font-mono font-bold px-1.5 py-0.5 rounded-full inline-flex items-center justify-center min-w-[16px] h-3.5 -top-1 relative leading-none transition-colors ${
+                  isActive
+                    ? 'bg-[#00BCFF] text-[#10384F]'
+                    : 'bg-[#E2E8F0] text-[#00617F] group-hover:bg-[#CBD5E1]'
+                }`}
+                aria-label={`${count} tools in ${cat}`}
+              >
+                {count}
+              </sup>
+            </button>
+          );
+        })}
       </nav>
 
       {/* Quick View Modal Dialog */}
@@ -682,12 +1084,7 @@ export default function App() {
           <QuickViewDialog 
             tool={selectedTool} 
             viewMode={viewMode} 
-            onClose={() => {
-              setSelectedTool(null);
-              if (focusedIndex !== null) {
-                cardRefs.current[focusedIndex]?.focus();
-              }
-            }} 
+            onClose={handleCloseQuickView} 
           />
         )}
       </AnimatePresence>

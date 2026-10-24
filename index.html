@@ -5,14 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>B-Anywhere</title>
     <meta name="description" content="High-performance creative tools for modern creators." />
+    
+    <!-- PWA & Mobile Optimization -->
+    <meta name="theme-color" content="#10384F" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="B-Anywhere" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+
+    <!-- Open Graph & Twitter Cards -->
     <meta property="og:title" content="B-Anywhere" />
     <meta property="og:description" content="High-performance creative tools for modern creators." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- High-Priority Image Asset Preloading for Instant Zero-Latency Paint -->
+    <link rel="preload" as="image" href="./assets/images/placeholder_desktop.jpg" fetchpriority="high" />
+    <link rel="preload" as="image" href="./assets/images/placeholder_mobile.jpg" />
   </head>
   <body class="bg-[#F8FAFC] text-[#10384F]" style="background: linear-gradient(133.25deg, rgba(0, 188, 255, 0.07) 10%, rgba(137, 211, 41, 0.05) 45%, rgba(0, 97, 127, 0.06) 85%), #F8FAFC;">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

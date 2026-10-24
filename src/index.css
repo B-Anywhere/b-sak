@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Rendering Performance: Off-screen paint deferral */
+.tool-card-container {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 360px;
+}
+
+/* GPU composite layering for fast scroll tracking */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
