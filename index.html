@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>B-Anywhere SAK</title>
     <meta name="description" content="B-Anywhere Swiss Army Knifes" />
-    
-    <!-- PWA & Mobile Optimization -->
     <meta name="theme-color" content="#10384F" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,18 +14,58 @@
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <link rel="manifest" href="./manifest.webmanifest" />
 
-    <!-- Open Graph & Twitter Cards -->
     <meta property="og:title" content="B-Anywhere SAK" />
     <meta property="og:description" content="B-Anywhere Swiss Army Knifes" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- High-Priority Image Asset Preloading for Instant Zero-Latency Paint -->
-    <link rel="preload" as="image" href="./assets/images/placeholder_desktop.jpg" fetchpriority="high" />
-    <link rel="preload" as="image" href="./assets/images/placeholder_mobile.jpg" />
+    <link rel="preload" href="./assets/fonts/noto-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./app.js"></script>
   </head>
-  <body class="bg-[#F8FAFC] text-[#10384F]" style="background: linear-gradient(133.25deg, rgba(0, 188, 255, 0.07) 10%, rgba(137, 211, 41, 0.05) 45%, rgba(0, 97, 127, 0.06) 85%), #F8FAFC;">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body>
+    <div class="bg-tint" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="progress" id="progress" aria-hidden="true"></div>
+      <div class="topbar-inner">
+        <a class="brand" id="brand" href="./" aria-label="B-Anywhere home">
+          <span class="brand-logo"><span><img src="./icon.svg" alt="" width="22" height="16" draggable="false" /></span></span>
+          <span class="brand-name">B-Anywhere</span>
+        </a>
+
+        <div class="controls">
+          <label class="search">
+            <span id="search-icon"></span>
+            <input id="search" type="text" placeholder="Search suite... (press /)" autocomplete="off" aria-label="Search tools" />
+            <button id="search-clear" class="search-clear" type="button" title="Clear search (Esc)" hidden></button>
+            <kbd class="search-hint" id="search-hint">/</kbd>
+          </label>
+          <div class="toggle" role="group" aria-label="Preview ratio">
+            <button id="mode-desktop" type="button" title="Desktop 16:9 Ratio"></button>
+            <button id="mode-mobile" type="button" title="Mobile 9:16 Ratio"></button>
+          </div>
+        </div>
+      </div>
+      <div id="offline" class="offline" hidden></div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span><span>Bayer/DNV - B-Anywhere Ecosystem</span></div>
+      <h1><span>B-ANYWHERE</span></h1>
+      <div class="hero-row">
+        <p id="count">Swiss Army Knifes</p>
+        <div class="keys">
+          <b>KEYS:</b>
+          <span><kbd>↑↓←→</kbd> Focus</span>·<span><kbd>Enter</kbd> Quick View</span>·<span><kbd>Esc</kbd> Close</span>
+        </div>
+      </div>
+    </section>
+
+    <main id="main"><noscript>Please enable JavaScript to view the tools.</noscript></main>
+
+    <nav id="categories" class="categories" aria-label="Category Filter Navigation"></nav>
+
+    <div id="dialog" class="overlay" role="dialog" aria-modal="true" aria-labelledby="qv-title" hidden></div>
   </body>
 </html>
