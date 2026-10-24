@@ -8,7 +8,7 @@
     "url": "https://openreel.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#0047FF",
+    "color": "#00617F",
     "iconType": "Video"
   },
   {
@@ -19,7 +19,7 @@
     "url": "https://openreel.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#EF4444",
+    "color": "#00BCFF",
     "iconType": "Radio"
   },
   {
@@ -30,7 +30,7 @@
     "url": "#",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#F59E0B",
+    "color": "#10384F",
     "iconType": "Layers"
   },
   {
@@ -41,7 +41,7 @@
     "url": "https://openreel.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#F43F5E",
+    "color": "#89D329",
     "iconType": "Film"
   },
   {
@@ -53,7 +53,7 @@
     "url": "https://core-staging.cloud.b-anywhere.com/b-cut",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#10B981",
+    "color": "#89D329",
     "iconType": "Scissors"
   },
   {
@@ -65,7 +65,7 @@
     "url": "https://opencut.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#8B5CF6",
+    "color": "#00617F",
     "iconType": "Film"
   },
   {
@@ -76,7 +76,7 @@
     "url": "https://opencut.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#3B82F6",
+    "color": "#00BCFF",
     "iconType": "Sparkles"
   },
   {
@@ -87,7 +87,7 @@
     "url": "https://opencut.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#10B981",
+    "color": "#10384F",
     "iconType": "Sliders"
   },
   {
@@ -98,7 +98,7 @@
     "url": "https://opencut.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#06B6D4",
+    "color": "#00BCFF",
     "iconType": "Sparkles"
   },
   {
@@ -109,7 +109,7 @@
     "url": "https://opencut.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#FBBF24",
+    "color": "#89D329",
     "iconType": "Scissors"
   },
   {
@@ -120,7 +120,7 @@
     "url": "https://core-staging.cloud.b-anywhere.com/b-cut",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#64748B",
+    "color": "#10384F",
     "iconType": "Video"
   },
   {
@@ -131,7 +131,7 @@
     "url": "https://core-staging.cloud.b-anywhere.com/b-cut",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#D946EF",
+    "color": "#00617F",
     "iconType": "Zap"
   },
   {
@@ -142,7 +142,7 @@
     "url": "#",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#EC4899",
+    "color": "#00617F",
     "iconType": "Zap"
   },
   {
@@ -153,7 +153,7 @@
     "url": "https://openreel.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#22C55E",
+    "color": "#89D329",
     "iconType": "Sparkles"
   },
   {
@@ -164,7 +164,7 @@
     "url": "https://core-staging.cloud.b-anywhere.com/b-cut",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#8B5CF6",
+    "color": "#00BCFF",
     "iconType": "Globe"
   },
   {
@@ -175,7 +175,7 @@
     "url": "https://openreel.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#6366F1",
+    "color": "#10384F",
     "iconType": "Layers"
   },
   {
@@ -186,7 +186,7 @@
     "url": "https://core-staging.cloud.b-anywhere.com/b-cut",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#14B8A6",
+    "color": "#00617F",
     "iconType": "Play"
   },
   {
@@ -197,7 +197,7 @@
     "url": "https://opencut.cloud.b-anywhere.com/",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#84CC16",
+    "color": "#89D329",
     "iconType": "Zap"
   },
   {
@@ -208,7 +208,7 @@
     "url": "https://core-staging.cloud.b-anywhere.com/b-cut",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#F97316",
+    "color": "#00BCFF",
     "iconType": "Scissors"
   },
   {
@@ -219,7 +219,7 @@
     "url": "https://core-staging.cloud.b-anywhere.com/b-cut",
     "desktopImg": "./assets/images/placeholder_desktop.jpg",
     "mobileImg": "./assets/images/placeholder_mobile.jpg",
-    "color": "#3B82F6",
+    "color": "#10384F",
     "iconType": "Video"
   }
 ]
