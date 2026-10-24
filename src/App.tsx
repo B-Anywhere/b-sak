@@ -23,7 +23,16 @@ import {
   Play,
   Maximize2,
   Download,
-  WifiOff
+  WifiOff,
+  Clapperboard,
+  TrendingUp,
+  Palette,
+  Bot,
+  Rocket,
+  ScrollText,
+  Activity,
+  Table,
+  Database
 } from 'lucide-react';
 import toolsData from './data/tools.json';
 import { usePWAInstall } from './usePWAInstall';
@@ -43,7 +52,8 @@ export interface ToolItem {
 }
 
 const ICON_MAP: Record<string, any> = {
-  Video, Scissors, Film, Radio, Layers, Sparkles, Sliders, Globe, Play, Zap
+  Video, Scissors, Film, Radio, Layers, Sparkles, Sliders, Globe, Play, Zap,
+  Clapperboard, Smartphone, TrendingUp, Palette, Bot, Rocket, ScrollText, Activity, Table, Database
 };
 
 // --- Reusable Skeleton Loader Component for Tool Previews ---
@@ -864,9 +874,9 @@ export default function App() {
               <span className="text-xl font-black tracking-tight text-[#10384F]">
                 B-Anywhere
               </span>
-              <span className="hidden sm:inline-block ml-2 text-[10px] font-mono font-bold tracking-widest px-2 py-0.5 rounded-full bg-[#E0F2FE] text-[#00617F] border border-[#BAE6FD] uppercase">
+              {/*<span className="hidden sm:inline-block ml-2 text-[10px] font-mono font-bold tracking-widest px-2 py-0.5 rounded-full bg-[#E0F2FE] text-[#00617F] border border-[#BAE6FD] uppercase">
                 Creator Suite
-              </span>
+              </span>*/}
             </div>
           </div>
 
@@ -934,10 +944,10 @@ export default function App() {
             </div>
 
             {/* PWA In-App Install Prompt */}
-            <PWAInstallHeaderButton />
+            {/*<PWAInstallHeaderButton />*/}
 
             {/* External Suite Link */}
-            <a 
+            {/*<a 
               href="https://creator.b-anywhere.com/" 
               target="_blank" 
               rel="noopener noreferrer"
@@ -945,7 +955,7 @@ export default function App() {
             >
               <span>JOIN SUITE</span>
               <ExternalLink size={12} />
-            </a>
+            </a>*/}
           </div>
         </div>
 
@@ -963,20 +973,19 @@ export default function App() {
         <div className="flex items-center gap-2 mb-3">
           <span className="w-2.5 h-2.5 rounded-full bg-[#89D329]" />
           <span className="text-[11px] font-mono font-bold uppercase tracking-[0.25em] text-[#00617F]">
-            Bayer Enterprise Ecosystem
+            Bayer/DNV - B-Anywhere Ecosystem
           </span>
         </div>
 
         <h1 className="text-5xl sm:text-8xl font-black tracking-tighter leading-[0.88] text-[#10384F] mb-4">
-          CRAFT<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00617F] via-[#00BCFF] to-[#89D329]">
-            B-ANYWHERE.
+            B-ANYWHERE
           </span>
         </h1>
         
         <div className="flex flex-wrap items-center justify-between gap-4 pt-3">
           <p className="text-[#475569] text-xs font-bold tracking-[0.2em] uppercase">
-            Unified Production Suite • {filteredData.length} Tools Available
+            Swiss Army Knifes • {filteredData.length} Tools Available
           </p>
 
           {/* Accessible Keyboard Navigation Guide Pill */}
