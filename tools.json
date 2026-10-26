@@ -24,7 +24,7 @@
   },
   {
     "id": "insight",
-    "title": "Insight by B-Anywhere",
+    "title": "Insights Social",
     "category": "B-Anywhere Products",
     "description": "B-Anywhere Social Consumer Insights",
     "url": "https://insight.b-anywhere.com/",
@@ -35,9 +35,9 @@
   },
   {
     "id": "openreel",
-    "title": "OpenReel Video",
+    "title": "OpenReel AI Video Editor",
     "category": "Creative Tools",
-    "description": "Professional browser-based video, audio, and photo editing application.",
+    "description": "Professional AI browser-based video, audio, and photo editing application.",
     "url": "https://openreel.cloud.b-anywhere.com/",
     "desktopImg": "./assets/screenshots/openreel-h.png",
     "mobileImg": "./assets/screenshots/openreel-v.png",
@@ -46,7 +46,7 @@
   },
   {
     "id": "opencut",
-    "title": "OpenCut",
+    "title": "OpenCut - Capcut Alternative",
     "category": "Creative Tools",
     "description": "A simple but powerful video editor that gets the job done. In your browser.",
     "url": "https://opencut.cloud.b-anywhere.com/",
@@ -57,7 +57,7 @@
   },
   {
     "id": "bcut",
-    "title": "B-Anycut",
+    "title": "B-Anycut Mobile",
     "category": "Creative Tools",
     "description": "Video editing with ffmpeg.wasm. 100% local processing, no data leaves your browser.",
     "detailedDescription": "A progressive web app for video editing with ffmpeg.wasm. 100% local processing, no data leaves your browser.",
@@ -69,7 +69,7 @@
   },
   {
     "id": "design",
-    "title": "B-Anywhere / Chi Design System",
+    "title": "B-Anywhere/Chi Design System",
     "category": "Creative Tools",
     "description": "One package per product: every item of each product, live in its own theme.",
     "url": "https://design.cloud.b-anywhere.com/",
@@ -79,21 +79,10 @@
     "iconType": "Palette"
   },
   {
-    "id": "baymax",
-    "title": "Baymax",
-    "category": "AI Agents",
-    "description": "B-Anywhere Friendly Assistant on Telegram.",
-    "url": "https://t.me/banywhere_bot",
-    "desktopImg": "./assets/screenshots/baymax-h.png",
-    "mobileImg": "./assets/screenshots/baymax-v.png",
-    "color": "#229ED9",
-    "iconType": "Bot"
-  },
-  {
     "id": "dokploy",
-    "title": "Dokploy",
+    "title": "Dokploy PaaS",
     "category": "DevOps",
-    "description": "B-Anywhere PaaS",
+    "description": "B-Anywhere Infrastructure Management",
     "detailedDescription": "Open-source self-hostable Platform as a Service (PaaS) that simplifies the deployment and management of applications and databases.",
     "url": "https://cloud.b-anywhere.com/",
     "desktopImg": "./assets/screenshots/dokploy-h.png",
@@ -103,7 +92,7 @@
   },
   {
     "id": "openobserve",
-    "title": "OpenObserve",
+    "title": "OpenObserve Logging",
     "category": "DevOps",
     "description": "B-Anywhere Logging System",
     "detailedDescription": "High-performance, unified observability for the AI era. 140x lower storage cost.",
@@ -115,7 +104,7 @@
   },
   {
     "id": "umami",
-    "title": "Umami",
+    "title": "Umami Analytics",
     "category": "DevOps",
     "description": "B-Anywhere Analytics Platform",
     "detailedDescription": "Umami is an open-source web and product analytics platform. Understand acquisition, behavior, conversion, and retention without cookies.",
@@ -148,5 +137,16 @@
     "mobileImg": "./assets/screenshots/supabase-v.png",
     "color": "#249361",
     "iconType": "Database"
+  },
+  {
+    "id": "baymax",
+    "title": "Baymax",
+    "category": "AI Agents",
+    "description": "B-Anywhere Friendly Assistant on Telegram.",
+    "url": "https://t.me/banywhere_bot",
+    "desktopImg": "./assets/screenshots/baymax-h.png",
+    "mobileImg": "./assets/screenshots/baymax-v.png",
+    "color": "#229ED9",
+    "iconType": "Bot"
   }
 ]

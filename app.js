@@ -66,7 +66,7 @@ function cardHtml(t, index) {
     <div class="frame">
       ${previewHtml(m === 'mobile' ? t.mobileImg : t.desktopImg, `${t.title} preview`, index < 6)}
       <div class="overlay-actions">
-        <button type="button" tabindex="-1" class="btn-quick" title="Press Enter"><span>QUICK VIEW</span>${icon('Maximize2', 12)}</button>
+        <button type="button" tabindex="-1" class="btn-quick" title="Press Enter">${icon('Maximize2', 12)}</button>
         <a class="btn-ext" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer" tabindex="-1" title="Open in new tab">${icon('ExternalLink', 14)}</a>
       </div>
       <div class="tag">${m} ${m === 'mobile' ? '9:16' : '16:9'}</div>
