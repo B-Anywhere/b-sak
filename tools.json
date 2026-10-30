@@ -160,5 +160,64 @@
     "mobileImg": "./assets/screenshots/baymax-v.png",
     "color": "#229ED9",
     "iconType": "Bot"
+  },
+  {
+    "id": "website",
+    "title": "B-Anywhere Website",
+    "category": "Brand & Web",
+    "description": "Public B-Anywhere brand landing and Zalo contact page.",
+    "detailedDescription": "Marketing landing for B-Anywhere — vertical AI solutions for agri-retailers across Southeast Asia. A digital venture of Bayer.",
+    "url": "https://b-anywhere.com/",
+    "desktopImg": "./assets/screenshots/website-h.png",
+    "mobileImg": "./assets/screenshots/website-v.png",
+    "color": "#10384f",
+    "iconType": "Globe"
+  },
+  {
+    "id": "cskh",
+    "title": "Bayer CSKH",
+    "category": "Brand & Web",
+    "description": "Bayer Vietnam farmer customer-care portal.",
+    "detailedDescription": "Chăm sóc khách hàng Nông Gia Bayer — customer support site for Bayer Vietnam farmers.",
+    "url": "https://cskhbayer.vn/",
+    "desktopImg": "./assets/screenshots/cskh-h.png",
+    "mobileImg": "./assets/screenshots/cskh-v.png",
+    "color": "#00A0DF",
+    "iconType": "Headphones"
+  },
+  {
+    "id": "qtng",
+    "title": "QTNG Rewards",
+    "category": "Brand & Web",
+    "description": "Bayer farmer rewards redirect (Quà tặng nông gia).",
+    "detailedDescription": "Quà tặng nông gia Bayer — reward program landing and redirect for farmers.",
+    "url": "https://qtng.vn/",
+    "desktopImg": "./assets/screenshots/qtng-h.png",
+    "mobileImg": "./assets/screenshots/qtng-v.png",
+    "color": "#E30613",
+    "iconType": "Gift"
+  },
+  {
+    "id": "lite-admin",
+    "title": "Lite Studio Admin",
+    "category": "Internal Tools",
+    "description": "Admin console for Lite Studio operations.",
+    "url": "https://lite-admin.b-anywhere.com/",
+    "desktopImg": "./assets/screenshots/lite-admin-h.png",
+    "mobileImg": "./assets/screenshots/lite-admin-v.png",
+    "color": "#7EC042",
+    "iconType": "Settings"
+  },
+  {
+    "id": "weather",
+    "title": "Weather Support",
+    "category": "Prototypes",
+    "description": "Farmer weather and disaster-support prototype.",
+    "detailedDescription": "Hỗ Trợ Nông Dân – Thời Tiết & Thiên Tai. Prototype / MVP for weather and disaster support.",
+    "url": "https://ws.b-anywhere.com/",
+    "desktopImg": "./assets/screenshots/weather-h.png",
+    "mobileImg": "./assets/screenshots/weather-v.png",
+    "color": "#0EA5E9",
+    "iconType": "CloudSun"
   }
 ]
