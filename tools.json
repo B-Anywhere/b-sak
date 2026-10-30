@@ -34,6 +34,18 @@
     "iconType": "TrendingUp"
   },
   {
+    "id": "core",
+    "title": "Core API",
+    "category": "B-Anywhere Products",
+    "description": "B-Anywhere Platform Core API.",
+    "detailedDescription": "B-Anywhere Platform Core API & Playground",
+    "url": "https://core-staging.cloud.b-anywhere.com/",
+    "desktopImg": "./assets/screenshots/core-h.png",
+    "mobileImg": "./assets/screenshots/core-v.png",
+    "color": "#10384f",
+    "iconType": "CPU"
+  },
+  {
     "id": "openreel",
     "title": "OpenReel AI Video Editor",
     "category": "Creative Tools",

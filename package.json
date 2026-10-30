@@ -1,0 +1,7 @@
+{
+  "name": "b-any-sak",
+  "private": true,
+  "scripts": {
+    "start": "bunx serve -l 5430"
+  }
+}

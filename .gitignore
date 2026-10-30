@@ -7,3 +7,5 @@ coverage/
 .env*
 !.env.example
 /dev-dist
+/bun.lock
+/tsconfig.json
